@@ -10,7 +10,11 @@
 
 ## تثبيت على أي جهاز
 
-1. انسخ المشروع أو: `git clone <رابط-الريبو>`
+1. انسخ المشروع أو:
+
+```bash
+git clone https://github.com/ammrgamal/twa-reply-assist.git
+```
 2. افتح كروم على `chrome://extensions`
 3. فعّل **Developer mode**
 4. **Load unpacked** واختار مجلد المشروع (اللي فيه `manifest.json`)
@@ -29,7 +33,7 @@
 ## تطوير من أي مكان
 
 ```bash
-git clone <رابط-الريبو>
+git clone https://github.com/ammrgamal/twa-reply-assist.git
 cd twa-reply-assist
 ```
 
