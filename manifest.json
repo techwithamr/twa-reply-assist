@@ -1,0 +1,85 @@
+{
+  "manifest_version": 3,
+  "name": "TWA Reply Assist",
+  "version": "1.2.0",
+  "description": "يصيغ ردود تعليقات Tech With Amr بعد قراءة البوست. النشر يدوي دائمًا.",
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "action": {
+    "default_title": "TWA Reply Assist",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    }
+  },
+  "options_ui": {
+    "page": "options/options.html",
+    "open_in_tab": true
+  },
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "commands": {
+    "toggle-reply-panel": {
+      "suggested_key": {
+        "default": "Alt+Shift+R"
+      },
+      "description": "فتح أو إغلاق لوحة صياغة الرد"
+    }
+  },
+  "permissions": ["storage", "activeTab", "scripting"],
+  "web_accessible_resources": [
+    {
+      "resources": ["content/content.js", "lib/voice.js"],
+      "matches": [
+        "https://www.linkedin.com/*",
+        "https://linkedin.com/*",
+        "https://www.facebook.com/*",
+        "https://web.facebook.com/*",
+        "https://www.youtube.com/*",
+        "https://youtube.com/*",
+        "https://x.com/*",
+        "https://twitter.com/*",
+        "https://www.instagram.com/*",
+        "https://instagram.com/*"
+      ]
+    }
+  ],
+  "host_permissions": [
+    "https://api.openai.com/*",
+    "https://www.linkedin.com/*",
+    "https://linkedin.com/*",
+    "https://www.facebook.com/*",
+    "https://web.facebook.com/*",
+    "https://www.youtube.com/*",
+    "https://youtube.com/*",
+    "https://x.com/*",
+    "https://twitter.com/*",
+    "https://www.instagram.com/*",
+    "https://instagram.com/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.linkedin.com/*",
+        "https://linkedin.com/*",
+        "https://www.facebook.com/*",
+        "https://web.facebook.com/*",
+        "https://www.youtube.com/*",
+        "https://youtube.com/*",
+        "https://x.com/*",
+        "https://twitter.com/*",
+        "https://www.instagram.com/*",
+        "https://instagram.com/*"
+      ],
+      "js": ["content/content.js"],
+      "css": ["content/panel.css"],
+      "run_at": "document_idle"
+    }
+  ]
+}

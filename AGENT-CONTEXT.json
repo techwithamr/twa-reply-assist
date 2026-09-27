@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "updatedAt": "2026-09-28T00:35:00.000Z",
+  "lastTask": "Clicking the comment box now generates and inserts the first draft. Visible toast for ready/progress/errors. v1.2.0 reloaded in Chrome.",
+  "recentChanges": [
+    "content.js: onCommentIntent → fillComposerDirect → insertInto. Toast #twa-toast always visible for errors.",
+    "insertInto falls back to textContent if execCommand fails.",
+    "dom-shortcut-test OK: click .ql-editor inserts draft 'one' and toast kind=ok."
+  ],
+  "lastHandoff": {
+    "at": "2026-09-28T00:35:00.000Z",
+    "ownerRequest": "جرب ومافيش استجابة — بمجرد ما أدوس على حقل comment يكتب التعليق مباشرة، وخلي في رسائل لأي خطأ",
+    "landed": "v1.2.0. Click/focus on Add a comment fills the box via the same TWA_GENERATE path. Does not click Post. Toast shows جاهز / بيصيغ / خطأ / اتكتب. check.mjs OK. dom-shortcut-test OK { filled: one, toast ok }. Reloaded unpacked extension.",
+    "canonicalPath": [
+      "content/content.js → onCommentIntent → fillComposerDirect → TWA_GENERATE → insertInto",
+      "content/panel.css → .twa-toast",
+      "background.js → TWA_GENERATE"
+    ],
+    "onePathCheck": "One generate/insert chain. Click-to-fill uses the same TWA_GENERATE as the panel. No auto-publish writer.",
+    "factsNextAgentNeeds": {
+      "paths": [
+        "C:\\Github\\twa-reply-assist\\content\\content.js",
+        "C:\\Github\\twa-reply-assist\\content\\panel.css",
+        "C:\\Github\\twa-reply-assist\\scripts\\dom-shortcut-test.mjs"
+      ],
+      "contracts": [
+        "Classic content script only",
+        "Never click LinkedIn Comment/Post",
+        "Empty comment box only — do not overwrite user-typed text"
+      ],
+      "liveIds": [
+        "noafjmnihfhcjfmfhfdmeecpmmphpbpn"
+      ],
+      "openState": "Owner must F5 LinkedIn once. Look for toast TWA جاهز then click Add a comment. If no toast, content script still not on the tab."
+    },
+    "doNotGuess": [
+      "Do not auto-click Post/Comment",
+      "Do not restore content.js as ES module",
+      "Do not drip extras",
+      "Do not commit unless asked"
+    ]
+  }
+}

@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <title>إعدادات TWA Reply Assist</title>
+    <link rel="stylesheet" href="options.css" />
+  </head>
+  <body>
+    <main>
+      <h1>TWA Reply Assist</h1>
+      <p class="lead">المفتاح يتسجل محليًا في كروم. الإضافة تصيغ فقط — النشر يدوي. نفس الحقل موجود في أيقونة الإضافة.</p>
+      <form id="form">
+        <label for="apiKey">مكان المفتاح — مفتاح OpenAI</label>
+        <input id="apiKey" name="apiKey" type="password" autocomplete="off" placeholder="sk-..." />
+
+        <label for="model">الموديل</label>
+        <input id="model" name="model" value="gpt-4.1-mini" />
+        <p class="hint">المقترح: <code>gpt-4.1-mini</code>. ينفع كمان <code>gpt-4.1</code> أو <code>gpt-4o-mini</code>.</p>
+
+        <label for="language">لغة الرد</label>
+        <select id="language" name="language">
+          <option value="auto">نفس لغة البوست</option>
+          <option value="ar">عربي</option>
+          <option value="en">English</option>
+        </select>
+
+        <label for="extraVoice">تعليمات إضافية فقط (اختياري)</label>
+        <textarea id="extraVoice" name="extraVoice" rows="3" placeholder="الهوية بتتجاب من Remotion تلقائيًا. هنا إضافات شخصية فقط."></textarea>
+        <p class="hint">الصوت الأساسي من Remotion عبر <code>node scripts/sync-brand-voice.mjs</code>.</p>
+
+        <button type="submit">حفظ</button>
+        <p id="status" hidden></p>
+      </form>
+    </main>
+    <script src="options.js"></script>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <title>TWA Reply Assist</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <h1>TWA Reply Assist</h1>
+    <p id="state">جاري الفحص…</p>
+    <button type="button" id="openPanel">افتح اللوحة على البوست ده</button>
+    <label for="apiKey">مكان المفتاح — الصقه هنا</label>
+    <input id="apiKey" type="password" autocomplete="off" placeholder="sk-..." />
+    <button type="button" id="saveKey">حفظ المفتاح</button>
+    <ol>
+      <li>افتح خانة تعليق على LinkedIn أو Facebook أو YouTube أو X أو Instagram</li>
+      <li>Alt+Shift+R أو زر <strong>رد</strong> إذا ظهر</li>
+      <li>راجع المسودة ثم انشر بنفسك</li>
+    </ol>
+    <button type="button" id="options">باقي الإعدادات</button>
+    <script src="popup.js"></script>
+  </body>
+</html>

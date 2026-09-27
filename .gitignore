@@ -1,0 +1,12 @@
+.DS_Store
+Thumbs.db
+*.log
+.vscode/
+node_modules/
+package-lock.json
+.env
+.env.*
+*.pem
+keys/
+scripts/*.png
+.chrome-profile/
