@@ -1,37 +1,38 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-28T00:40:00.000Z",
-  "lastTask": "Committed TWA Reply Assist on master as cd1056e. Push blocked: no git remote, gh not installed, Origin CLI unsupported on Windows.",
+  "updatedAt": "2026-09-28T01:15:00.000Z",
+  "lastTask": "Owner asked for steps to run TWA Reply Assist on another machine and move it to the cloud for remote development.",
   "recentChanges": [
-    "Initial commit cd1056e513c8fa2e4e61ca684854f1b2b8191d7d — draft-on-click extension, no auto-post.",
-    "Did not add origin or push."
+    "No Git remote exists on this repo (local master only).",
+    "API key lives in chrome.storage.local, not in files.",
+    "Uncommitted 1.4.3 work is still local."
   ],
   "lastHandoff": {
-    "at": "2026-09-28T00:40:00.000Z",
-    "ownerRequest": "Stage the changes, commit, and push this branch (master).",
-    "landed": "Commit created: cd1056e Add TWA Reply Assist: draft comments on click without auto-posting. 44 files. Push not done — no remote, gh missing, Origin CLI not supported on native Windows.",
+    "at": "2026-09-28T01:15:00.000Z",
+    "ownerRequest": "قولى الخطوات عشان اشغلى على جهاز تانى بسهولة و انقله الكلاود عشان اطوره من اى مكان لو ينفع",
+    "landed": "Documented copy/clone + Load unpacked + key-on-each-Chrome. Cloud = GitHub + Cursor; extension still loads locally. Repo has no remote yet; did not create one.",
     "canonicalPath": [
-      "git HEAD master → cd1056e513c8fa2e4e61ca684854f1b2b8191d7d"
+      "content/alive.js → #twa-alive-bar → TWA_GENERATE",
+      "C:\\Github\\twa-reply-assist"
     ],
-    "onePathCheck": "One local master commit. No second remote invented.",
+    "onePathCheck": "One product path: this folder as the unpacked extension. Cloud is git remote of the same folder, not a second extension.",
     "factsNextAgentNeeds": {
       "paths": [
         "C:\\Github\\twa-reply-assist"
       ],
       "contracts": [
-        "Never click LinkedIn Comment/Post",
-        "Classic content script only"
+        "Never commit API key",
+        "Do not invent a git remote unless owner asks",
+        "Version remount 1.4.3"
       ],
       "liveIds": [
-        "cd1056e513c8fa2e4e61ca684854f1b2b8191d7d",
         "noafjmnihfhcjfmfhfdmeecpmmphpbpn"
       ],
-      "openState": "Working tree may have this handoff update uncommitted. Push needs a GitHub repo URL or gh install. Sibling remotes: ammrgamal/Remotion, quickitquote/techwithamr."
+      "openState": "Local master, no remote. Owner must pick private/public GitHub if they want cloud."
     },
     "doNotGuess": [
-      "Do not invent origin URL or force-push",
-      "Do not install Origin CLI on native Windows",
-      "Do not commit unless asked"
+      "Do not create GitHub repo until owner picks visibility",
+      "Do not drip extras after they pick"
     ]
   }
 }

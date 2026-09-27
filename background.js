@@ -1,6 +1,45 @@
 import { buildMessages } from "./lib/voice.js";
 import { createDrafts } from "./lib/openai.js";
 
+const HOST_GLOBS = [
+  "https://www.linkedin.com/*",
+  "https://linkedin.com/*",
+  "https://www.facebook.com/*",
+  "https://web.facebook.com/*",
+  "https://www.youtube.com/*",
+  "https://youtube.com/*",
+  "https://x.com/*",
+  "https://twitter.com/*",
+  "https://www.instagram.com/*",
+  "https://instagram.com/*",
+  "http://127.0.0.1/*",
+  "http://localhost/*",
+];
+
+async function injectIntoTab(tab) {
+  if (!tab?.id || !tab.url || tab.url.startsWith("chrome")) return;
+  try {
+    await chrome.scripting.insertCSS({ target: { tabId: tab.id }, files: ["content/panel.css"] });
+    await chrome.scripting.executeScript({
+      target: { tabId: tab.id, allFrames: true },
+      files: ["content/alive.js", "content/content.js"],
+    });
+  } catch (err) {
+    console.warn("TWA inject failed", tab.url, err?.message || err);
+  }
+}
+
+async function injectMatchingTabs() {
+  const tabs = await chrome.tabs.query({ url: HOST_GLOBS });
+  for (const tab of tabs) await injectIntoTab(tab);
+}
+
+chrome.runtime.onInstalled.addListener(injectMatchingTabs);
+chrome.runtime.onStartup.addListener(injectMatchingTabs);
+chrome.tabs.onUpdated.addListener((_tabId, info, tab) => {
+  if (info.status === "complete") injectIntoTab(tab);
+});
+
 async function togglePanelOnTab(tabId) {
   const ping = () => chrome.tabs.sendMessage(tabId, { type: "TWA_TOGGLE" });
   try {
@@ -14,9 +53,16 @@ async function togglePanelOnTab(tabId) {
   } catch {
     // css may already be there
   }
-  await chrome.scripting.executeScript({ target: { tabId }, files: ["content/content.js"] });
+  await chrome.scripting.executeScript({
+    target: { tabId, allFrames: true },
+    files: ["content/alive.js", "content/content.js"],
+  });
   await new Promise((resolve) => setTimeout(resolve, 200));
-  await ping();
+  try {
+    await ping();
+  } catch (err) {
+    return { ok: true, injected: true, warn: err?.message || String(err) };
+  }
   return { ok: true };
 }
 
@@ -53,7 +99,7 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       author: message.author,
       tone: message.tone,
       language: stored.language || "auto",
-      extraVoice: stored.extraVoice || "",
+      extraVoice: [stored.extraVoice || "", message.customNote || ""].filter(Boolean).join("\n"),
     });
 
     const drafts = await createDrafts({

@@ -1,5 +1,14 @@
 /* Classic content script — no import. Split markers stay identical to lib/voice.js. */
-if (!window.__twaReplyAssistLoaded) {
+if (window !== window.top) {
+  document.getElementById("twa-reply-root")?.remove();
+  document.getElementById("twa-alive-bar")?.remove();
+  document.querySelectorAll(".twa-yap, .twa-fab, .twa-panel").forEach((n) => n.remove());
+  window.__twaReplyAssistVersion = "1.4.3";
+} else if (window.__twaReplyAssistVersion !== "1.4.3") {
+  window.__twaReplyAssistVersion = "1.4.3";
+  document.getElementById("twa-reply-root")?.remove();
+  document.querySelectorAll(".twa-yap").forEach((n) => n.remove());
+  document.querySelectorAll(".twa-fab, .twa-panel").forEach((n) => n.remove());
   window.__twaReplyAssistLoaded = true;
 
   const CONTEXT_SPLIT = "\n---\n";
@@ -280,11 +289,14 @@ if (!window.__twaReplyAssistLoaded) {
     <details class="twa-more">
       <summary>نبرة</summary>
       <select id="twa-tone">
-        <option value="professional">مهني</option>
-        <option value="warm">ودّي</option>
-        <option value="question">سؤال تقني</option>
-        <option value="thanks">شكر قصير</option>
-        <option value="cta">CTA خفيف</option>
+        <option value="agree">Agree</option>
+        <option value="supportive">Supportive</option>
+        <option value="humor">Light humor</option>
+        <option value="experience">From experience</option>
+        <option value="question">Smart question</option>
+        <option value="story">Quick story</option>
+        <option value="bold">Bold take</option>
+        <option value="custom">Custom</option>
       </select>
     </details>
     <div class="twa-row">
@@ -296,7 +308,7 @@ if (!window.__twaReplyAssistLoaded) {
     <div id="twa-drafts"></div>
   `;
 
-  root.append(toast, panel, fab);
+  root.append(toast);
   document.documentElement.appendChild(root);
 
   const contextBox = panel.querySelector("#twa-context");
@@ -354,10 +366,8 @@ if (!window.__twaReplyAssistLoaded) {
     });
   }
 
-  function togglePanel(forceOpen) {
-    const open = forceOpen ?? !root.classList.contains("is-open");
-    root.classList.toggle("is-open", open);
-    if (open) fillContext();
+  function togglePanel() {
+    // One surface: the top #twa-alive-bar. Do not reopen the old side panel.
   }
 
   function syncFab() {
@@ -425,12 +435,14 @@ if (!window.__twaReplyAssistLoaded) {
     });
   }
 
-  async function fillComposerDirect(composer) {
+  async function fillComposerDirect(composer, opts = {}) {
     if (!composer || filling) return;
     const now = Date.now();
-    if (now - lastFillAt < 900) return;
-    if (composer.dataset.twaFilled === "1" && !composerIsEmpty(composer)) return;
-    if (!composerIsEmpty(composer) && composer.dataset.twaFilled !== "1") return;
+    if (now - lastFillAt < 600) return;
+    if (!opts.force) {
+      if (composer.dataset.twaFilled === "1" && !composerIsEmpty(composer)) return;
+      if (!composerIsEmpty(composer) && composer.dataset.twaFilled !== "1") return;
+    }
 
     filling = true;
     lastFillAt = now;
@@ -448,7 +460,8 @@ if (!window.__twaReplyAssistLoaded) {
       author: ctx.author,
       postText: ctx.postText,
       commentText: ctx.commentText,
-      tone: toneBox.value || "professional",
+      tone: opts.tone || toneBox.value || "agree",
+      customNote: opts.customNote || "",
     });
     filling = false;
     if (!res?.ok) {
@@ -469,31 +482,98 @@ if (!window.__twaReplyAssistLoaded) {
     showToast("اتكتب في الخانة. راجع وبعدين انشر بنفسك.", "ok");
   }
 
-  async function onCommentIntent(event) {
-    const target = event.target;
-    if (!target || target.nodeType !== 1 || target.closest("#twa-reply-root")) return;
+  const YAP_TONES = [
+    { id: "agree", icon: "✓", label: "Agree" },
+    { id: "supportive", icon: "🤝", label: "Supportive" },
+    { id: "humor", icon: "🙂", label: "Light humor" },
+    { id: "experience", icon: "💡", label: "From experience" },
+    { id: "question", icon: "?", label: "Smart question" },
+    { id: "story", icon: "📖", label: "Quick story" },
+    { id: "bold", icon: "⚡", label: "Bold take" },
+    { id: "custom", icon: "✎", label: "Custom" },
+  ];
 
-    const triggerText = String(target.innerText || target.textContent || "").trim();
-    const looksTrigger = /^add a comment|^write a comment|^إضافة تعليق|^أضف تعليق/i.test(triggerText);
-    if (!isCommentSurface(target) && !looksTrigger) return;
+  async function ensureComposer(box) {
+    let composer = resolveComposer(box) || box.querySelector(".ql-editor, [contenteditable='true'], textarea");
+    if (composer) return composer;
+    const trigger = [...box.querySelectorAll("div, span, button")].find((n) =>
+      /add a comment|write a comment|إضافة تعليق/i.test((n.textContent || "").trim())
+    );
+    if (trigger) trigger.click();
+    await new Promise((r) => setTimeout(r, 280));
+    return (
+      box.querySelector(".ql-editor, [contenteditable='true'], textarea") ||
+      resolveComposer(document.activeElement)
+    );
+  }
 
-    let composer = resolveComposer(target);
-    if (!composer) {
-      await new Promise((r) => setTimeout(r, 280));
-      composer =
-        resolveComposer(document.activeElement) ||
-        closestCard(target).querySelector(".comments-comment-box .ql-editor, .comments-comment-box [contenteditable='true']");
+  function closeAllYapMenus() {
+    document.querySelectorAll(".twa-yap.is-open").forEach((n) => n.classList.remove("is-open"));
+  }
+
+  function mountYapOnBox(box) {
+    if (!box || box.querySelector(":scope > .twa-yap")) return;
+    const wrap = el("div", { className: "twa-yap" });
+    const btn = el("button", { className: "twa-yap-btn", type: "button", text: "T" });
+    btn.title = "TWA Reply — اختَر نبرة";
+    btn.setAttribute("aria-label", "TWA Reply tones");
+    const menu = el("div", { className: "twa-yap-menu" });
+    YAP_TONES.forEach((tone) => {
+      const row = el("button", { className: "twa-yap-row", type: "button" });
+      row.dataset.tone = tone.id;
+      row.innerHTML = `<span class="twa-yap-ico">${tone.icon}</span><span>${tone.label}</span>`;
+      row.addEventListener("click", async (event) => {
+        event.preventDefault();
+        event.stopPropagation();
+        let customNote = "";
+        if (tone.id === "custom") {
+          customNote = window.prompt("اكتب النبرة أو التعليمات:") || "";
+          if (!customNote.trim()) {
+            showToast("النبرة المخصصة فاضية.", "error");
+            return;
+          }
+        }
+        closeAllYapMenus();
+        showToast(`بيصيغ (${tone.label})…`, "info");
+        const composer = await ensureComposer(box);
+        if (!composer) {
+          showToast("ما فتحتش خانة التعليق. دوس Add a comment بعدين الأيقونة.", "error");
+          return;
+        }
+        try {
+          await fillComposerDirect(composer, { tone: tone.id, customNote, force: true });
+        } catch (err) {
+          filling = false;
+          showToast(`خطأ غير متوقع: ${err?.message || err}`, "error");
+        }
+      });
+      menu.appendChild(row);
+    });
+    btn.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      const open = wrap.classList.contains("is-open");
+      closeAllYapMenus();
+      wrap.classList.toggle("is-open", !open);
+    });
+    wrap.append(btn, menu);
+    box.insertBefore(wrap, box.firstChild);
+  }
+
+  function mountYapButtons() {
+    const boxes = new Set(
+      document.querySelectorAll(
+        ".comments-comment-box, .comments-comment-texteditor, [class*='comments-comment-box']"
+      )
+    );
+    for (const n of document.querySelectorAll("div, span, button")) {
+      const t = (n.textContent || "").trim();
+      if (/^Add a comment/i.test(t) && n.children.length <= 1) {
+        const host = n.closest(".comments-comment-box, form, div");
+        if (host && !host.closest("#twa-reply-root")) boxes.add(host);
+      }
     }
-    if (!composer) {
-      showToast("دوس جوه خانة Add a comment نفسها بعد ما تفتح.", "error");
-      return;
-    }
-    try {
-      await fillComposerDirect(composer);
-    } catch (err) {
-      filling = false;
-      showToast(`خطأ غير متوقع: ${err?.message || err}`, "error");
-    }
+    boxes.forEach(mountYapOnBox);
   }
 
   fab.addEventListener("click", () => togglePanel());
@@ -544,12 +624,22 @@ if (!window.__twaReplyAssistLoaded) {
     true
   );
 
-  document.addEventListener("focusin", onCommentIntent, true);
-  document.addEventListener("click", onCommentIntent, true);
+  document.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!target || target.nodeType !== 1) return;
+    if (!target.closest(".twa-yap")) closeAllYapMenus();
+  }, true);
 
   syncFab();
-  showToast("TWA جاهز — اضغط خانة Add a comment عشان يتكتب الرد.", "info");
-  const observer = new MutationObserver(syncFab);
-  observer.observe(document.documentElement, { childList: true, subtree: true, attributes: true });
-  setInterval(syncFab, 1500);
+  mountYapButtons();
+  showToast("TWA جاهز — اختَر نبرة من الشريط فوق الصفحة.", "info");
+  const observer = new MutationObserver(() => {
+    syncFab();
+    mountYapButtons();
+  });
+  observer.observe(document.documentElement, { childList: true, subtree: true });
+  setInterval(() => {
+    syncFab();
+    mountYapButtons();
+  }, 1500);
 }

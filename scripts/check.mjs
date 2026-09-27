@@ -26,7 +26,8 @@ assert.match(hosts, /x\.com/);
 assert.match(hosts, /instagram\.com/);
 assert.equal(manifest.commands["toggle-reply-panel"].suggested_key.default, "Alt+Shift+R");
 assert.equal(manifest.background.service_worker, "background.js");
-assert.deepEqual(manifest.content_scripts[0].js, ["content/content.js"]);
+assert.deepEqual(manifest.content_scripts[0].js, ["content/alive.js", "content/content.js"]);
+assert.match(readFileSync(join(root, "content", "alive.js"), "utf8"), /twa-alive-bar/);
 assert.ok(manifest.permissions.includes("scripting"));
 assert.equal(manifest.content_scripts[0].type, undefined);
 assert.doesNotMatch(readFileSync(join(root, "content", "content.js"), "utf8"), /^import /m);
@@ -45,7 +46,7 @@ const messages = buildMessages({
   postText: "Scaling AI in Egypt roundtable",
   commentText: "Great having your perspective",
   author: "Mostafa",
-  tone: "professional",
+  tone: "agree",
   language: "ar",
   extraVoice: "",
 });
@@ -65,7 +66,12 @@ assert.match(panel, /has-composer/);
 assert.match(panel, /toggle-reply-panel|TWA_TOGGLE|KeyR/);
 assert.match(panel, /fillComposerDirect/);
 assert.match(panel, /twa-toast/);
-assert.match(panel, /onCommentIntent/);
+assert.match(panel, /__twaReplyAssistVersion !== "1.4.3"/);
+assert.match(panel, /__twaReplyAssistVersion/);
+assert.match(panel, /mountYapOnBox/);
+assert.match(panel, /YAP_TONES/);
+assert.match(readFileSync(join(root, "lib", "voice.js"), "utf8"), /id: "agree"/);
+assert.match(readFileSync(join(root, "background.js"), "utf8"), /injectMatchingTabs/);
 
 console.log("check.mjs OK", {
   model: DEFAULT_MODEL,
