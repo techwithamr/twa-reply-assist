@@ -9,7 +9,7 @@
   "lastHandoff": {
     "at": "2026-10-07T11:50:00.000Z",
     "ownerRequest": "عاوزك تعمل repo لبرنامج ده على github",
-    "landed": "Program lives at https://github.com/ammrgamal/twa-reply-assist (private). Latest commit includes the Android overlay and the desktop extension.",
+    "landed": "Program lives at https://github.com/ammrgamal/twa-reply-assist (private). Commit 6279f5c is on origin/master and includes the Android overlay plus the desktop extension.",
     "canonicalPath": [
       "https://github.com/ammrgamal/twa-reply-assist",
       "lib/voice.js → shared/twa-voice.json → android/"
@@ -28,7 +28,7 @@
       "liveIds": [
         "noafjmnihfhcjfmfhfdmeecpmmphpbpn"
       ],
-      "openState": "origin is https://github.com/ammrgamal/twa-reply-assist.git master."
+      "openState": "origin/master is 6279f5c at https://github.com/ammrgamal/twa-reply-assist.git"
     },
     "doNotGuess": [
       "Do not create a second GitHub repo for the same program",
