@@ -10,3 +10,8 @@ package-lock.json
 keys/
 scripts/*.png
 .chrome-profile/
+android/.gradle/
+android/build/
+android/app/build/
+android/local.properties
+android/.idea/

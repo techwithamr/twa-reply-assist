@@ -56,7 +56,8 @@ foreach ($b in $chrome.FindAll([System.Windows.Automation.TreeScope]::Descendant
   if ($b.Current.AutomationId -eq 'loadUnpacked') { $load = $b; break }
 }
 if (-not $load) { throw "NO_LOAD" }
-Set-Clipboard -Value "C:\Github\twa-reply-assist"
+. (Join-Path $PSScriptRoot "_repo-root.ps1")
+Set-Clipboard -Value $script:TwaRepoRoot
 [WinApi6]::SetForegroundWindow($chrome.Current.NativeWindowHandle) | Out-Null
 Start-Sleep -Milliseconds 200
 $load.GetCurrentPattern([System.Windows.Automation.InvokePattern]::Pattern).Invoke()

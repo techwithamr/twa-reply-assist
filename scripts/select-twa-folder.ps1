@@ -64,7 +64,8 @@ if ($search) {
 if ($address) {
   Click-El $address
   Start-Sleep -Milliseconds 250
-  [System.Windows.Forms.SendKeys]::SendWait("C:\Github\twa-reply-assist")
+  . (Join-Path $PSScriptRoot "_repo-root.ps1")
+  [System.Windows.Forms.SendKeys]::SendWait($script:TwaRepoRoot)
   Start-Sleep -Milliseconds 200
   [System.Windows.Forms.SendKeys]::SendWait("{ENTER}")
   Write-Output "ADDRESS_TYPED"

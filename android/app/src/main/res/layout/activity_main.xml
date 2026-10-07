@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:background="#FFF7F3">
+
+  <LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:text="TWA Reply Assist"
+      android:textColor="#0B1220"
+      android:textSize="22sp"
+      android:textStyle="bold" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:text="أيقونة طايرة فوق أي تطبيق لما تكتب رد. التوليد gpt-4.1-mini. النشر يدوي."
+      android:textColor="#334155"
+      android:textSize="15sp" />
+
+    <TextView
+      android:id="@+id/status"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:text="جاري الفحص…"
+      android:textColor="#E85D3C"
+      android:textSize="14sp" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:text="مفتاح OpenAI"
+      android:textColor="#0B1220"
+      android:textStyle="bold" />
+
+    <EditText
+      android:id="@+id/apiKey"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="6dp"
+      android:hint="sk-..."
+      android:inputType="textPassword"
+      android:importantForAutofill="no" />
+
+    <Button
+      android:id="@+id/saveKey"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:backgroundTint="#E85D3C"
+      android:text="حفظ المفتاح"
+      android:textColor="#FFF7F3" />
+
+    <Button
+      android:id="@+id/overlayBtn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="12dp"
+      android:backgroundTint="#0B1220"
+      android:text="1) السماح بالأيقونة فوق التطبيقات"
+      android:textColor="#FFF7F3" />
+
+    <Button
+      android:id="@+id/a11yBtn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:backgroundTint="#0B1220"
+      android:text="2) تشغيل خدمة الوصول"
+      android:textColor="#FFF7F3" />
+
+    <Button
+      android:id="@+id/startBtn"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="8dp"
+      android:backgroundTint="#E85D3C"
+      android:text="تشغيل الأيقونة"
+      android:textColor="#FFF7F3" />
+
+    <TextView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginTop="16dp"
+      android:text="افتح LinkedIn أو فيسبوك أو أي تطبيق، دوس خانة رد، الأيقونة T تظهر. اختَر نبرة، راجع المسودة، انشر بنفسك."
+      android:textColor="#334155"
+      android:textSize="14sp" />
+  </LinearLayout>
+</ScrollView>

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "TWA Reply Assist",
-  "version": "1.4.3",
+  "version": "1.4.8",
   "description": "يصيغ ردود تعليقات Tech With Amr بعد قراءة البوست. النشر يدوي دائمًا.",
   "icons": {
     "16": "icons/icon16.png",

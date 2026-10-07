@@ -14,15 +14,16 @@
         <input id="apiKey" name="apiKey" type="password" autocomplete="off" placeholder="sk-..." />
 
         <label for="model">الموديل</label>
-        <input id="model" name="model" value="gpt-4.1-mini" />
-        <p class="hint">المقترح: <code>gpt-4.1-mini</code>. ينفع كمان <code>gpt-4.1</code> أو <code>gpt-4o-mini</code>.</p>
+        <input id="model" name="model" value="gpt-4.1-mini" readonly />
+        <p class="hint">التوليد ثابت على <code>gpt-4.1-mini</code>.</p>
 
         <label for="language">لغة الرد</label>
         <select id="language" name="language">
-          <option value="auto">نفس لغة البوست</option>
+          <option value="auto" selected>نفس لغة البوست</option>
           <option value="ar">عربي</option>
           <option value="en">English</option>
         </select>
+        <p class="hint">الافتراضي: نفس لغة البوست. عربي/English بس لو حابب تفرض لغة.</p>
 
         <label for="extraVoice">تعليمات إضافية فقط (اختياري)</label>
         <textarea id="extraVoice" name="extraVoice" rows="3" placeholder="الهوية بتتجاب من Remotion تلقائيًا. هنا إضافات شخصية فقط."></textarea>

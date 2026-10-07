@@ -27,7 +27,8 @@ Write-Output "RECT=$($rect.Left),$($rect.Top),$w,$h"
 $bmp = New-Object System.Drawing.Bitmap $w, $h
 $g = [System.Drawing.Graphics]::FromImage($bmp)
 $g.CopyFromScreen($rect.Left, $rect.Top, 0, 0, (New-Object System.Drawing.Size $w, $h))
-$out = "C:\Github\twa-reply-assist\scripts\chrome-shot.png"
+. (Join-Path $PSScriptRoot "_repo-root.ps1")
+$out = Join-Path $script:TwaRepoRoot "scripts\chrome-shot.png"
 $bmp.Save($out, [System.Drawing.Imaging.ImageFormat]::Png)
 $g.Dispose(); $bmp.Dispose()
 Write-Output "SHOT=$out"

@@ -27,51 +27,105 @@
     } else if (!host.contains(bar)) {
       host.appendChild(bar);
     }
+    if (!bar.querySelector("#twa-alive-launch")) buildBar(bar);
     styleBar(bar);
     return bar;
   }
 
   function styleBar(bar) {
+    if (document.querySelector(".twa-yap")) {
+      bar.style.display = "none";
+      bar.classList.remove("is-open");
+      return;
+    }
+    const open = bar.classList.contains("is-open");
     bar.style.cssText = [
+      "display:block",
       "position:fixed",
       "top:12px",
-      "left:50%",
-      "transform:translateX(-50%)",
+      "inset-inline-end:12px",
+      "left:auto",
+      "transform:none",
       "z-index:2147483647",
-      "background:#E85D3C",
-      "color:#fff7f3",
-      "padding:12px 16px",
-      "border-radius:14px",
-      "font:700 15px/1.4 Segoe UI,Tahoma,Arial,sans-serif",
-      "direction:rtl",
-      "text-align:right",
-      "min-width:280px",
-      "max-width:520px",
-      "box-shadow:0 8px 24px rgba(0,0,0,.45)",
+      "width:32px",
+      "height:32px",
+      "padding:0",
+      "margin:0",
+      "min-width:0",
+      "max-width:none",
+      "background:transparent",
+      "box-shadow:none",
+      "overflow:visible",
       "pointer-events:auto",
+      "font:700 13px/1 Segoe UI,Tahoma,Arial,sans-serif",
     ].join(";");
+    const launch = bar.querySelector("#twa-alive-launch");
+    if (launch) {
+      launch.style.cssText = [
+        "width:32px",
+        "height:32px",
+        "border:0",
+        "border-radius:999px",
+        "background:#E85D3C",
+        "color:#fff7f3",
+        "font:800 13px/1 Segoe UI,Tahoma,Arial,sans-serif",
+        "cursor:pointer",
+        "box-shadow:0 2px 8px rgba(232,93,60,.4)",
+        "padding:0",
+      ].join(";");
+    }
+    const menu = bar.querySelector("#twa-alive-menu");
+    if (menu) {
+      menu.style.cssText = [
+        "display:" + (open ? "flex" : "none"),
+        "flex-direction:column",
+        "gap:6px",
+        "position:absolute",
+        "top:40px",
+        "right:0",
+        "left:auto",
+        "min-width:168px",
+        "max-width:220px",
+        "padding:8px",
+        "border-radius:12px",
+        "background:#E85D3C",
+        "color:#fff7f3",
+        "direction:rtl",
+        "text-align:right",
+        "box-shadow:0 8px 20px rgba(0,0,0,.28)",
+      ].join(";");
+    }
   }
 
   function buildBar(bar) {
     bar.innerHTML = "";
-    const title = document.createElement("div");
-    title.textContent = "TWA شغال — اختَر نبرة";
-    title.style.marginBottom = "8px";
-    bar.appendChild(title);
+    const launch = document.createElement("button");
+    launch.id = "twa-alive-launch";
+    launch.type = "button";
+    launch.textContent = "T";
+    launch.title = "TWA شغال — اختَر نبرة";
+    launch.setAttribute("aria-label", "TWA شغال — اختَر نبرة");
+    launch.addEventListener("click", (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      bar.classList.toggle("is-open");
+      styleBar(bar);
+    });
+    const menu = document.createElement("div");
+    menu.id = "twa-alive-menu";
     const status = document.createElement("div");
     status.id = "twa-alive-status";
-    status.style.cssText = "font-weight:600;margin-bottom:8px;opacity:.95";
+    status.style.cssText = "font:600 11px/1.3 Segoe UI,Tahoma,Arial,sans-serif;opacity:.95";
     status.textContent = "جاهز";
-    bar.appendChild(status);
     const row = document.createElement("div");
-    row.style.cssText = "display:flex;flex-wrap:wrap;gap:6px;direction:ltr;justify-content:flex-start";
+    row.style.cssText = "display:flex;flex-wrap:wrap;gap:4px;direction:ltr;justify-content:flex-start";
     TONES.forEach(([id, label]) => {
       const btn = document.createElement("button");
       btn.type = "button";
       btn.dataset.tone = id;
       btn.textContent = label;
       btn.style.cssText =
-        "border:0;border-radius:999px;padding:5px 8px;background:#fff7f3;color:#0B1220;font:700 11px Segoe UI,sans-serif;cursor:pointer";
+        "border:0;border-radius:999px;padding:4px 7px;background:#fff7f3;color:#0B1220;font:700 10px Segoe UI,sans-serif;cursor:pointer";
       btn.addEventListener("click", (event) => {
         event.preventDefault();
         event.stopPropagation();
@@ -79,13 +133,37 @@
       });
       row.appendChild(btn);
     });
-    bar.appendChild(row);
+    menu.append(status, row);
+    bar.append(launch, menu);
+    if (!bar.dataset.twaOutside) {
+      bar.dataset.twaOutside = "1";
+      document.addEventListener(
+        "click",
+        (event) => {
+          if (!bar.classList.contains("is-open")) return;
+          if (bar.contains(event.target)) return;
+          bar.classList.remove("is-open");
+          styleBar(bar);
+        },
+        true
+      );
+    }
   }
 
   function setStatus(status, text, bad) {
     if (!status) return;
     status.textContent = text;
     status.style.color = bad ? "#ffe1dc" : "#fff7f3";
+  }
+
+  function detectPlatform(host) {
+    const name = String(host || (typeof location !== "undefined" ? location.hostname : "") || "");
+    if (name.includes("linkedin.com")) return "linkedin";
+    if (name.includes("facebook.com")) return "facebook";
+    if (name.includes("youtube.com")) return "youtube";
+    if (name.includes("instagram.com")) return "instagram";
+    if (name.includes("x.com") || name.includes("twitter.com")) return "x";
+    return "unknown";
   }
 
   function postText() {
@@ -184,7 +262,7 @@
     ext.runtime.sendMessage(
       {
         type: "TWA_GENERATE",
-        platform: "linkedin",
+        platform: detectPlatform(),
         author: "",
         postText: text,
         commentText: "",
@@ -208,7 +286,7 @@
           setStatus(status, `جاهز بس ما اتنكتبش: ${draft}`, true);
           return;
         }
-        setStatus(status, "اتكتب. راجع وانشر بنفسك.");
+        setStatus(status, `اتكتب · ${res.model || "gpt-4.1-mini"}`);
       }
     );
   }

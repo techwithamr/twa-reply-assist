@@ -29,7 +29,7 @@ document.getElementById("saveKey").addEventListener("click", () => {
   const apiKey = keyInput.value.trim();
   chrome.storage.local.set({ apiKey }, () => {
     state.textContent = apiKey
-      ? `اتحفظ · ${"gpt-4.1-mini"}`
+      ? `اتحفظ · gpt-4.1-mini`
       : "المفتاح فاضي — الصقه في الحقل تحت واضغط حفظ.";
   });
 });

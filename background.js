@@ -1,4 +1,4 @@
-import { buildMessages } from "./lib/voice.js";
+import { buildMessages, DEFAULT_MODEL } from "./lib/voice.js";
 import { createDrafts } from "./lib/openai.js";
 
 const HOST_GLOBS = [
@@ -34,8 +34,18 @@ async function injectMatchingTabs() {
   for (const tab of tabs) await injectIntoTab(tab);
 }
 
-chrome.runtime.onInstalled.addListener(injectMatchingTabs);
-chrome.runtime.onStartup.addListener(injectMatchingTabs);
+async function pinDefaults() {
+  await chrome.storage.local.set({ language: "auto", model: DEFAULT_MODEL });
+}
+
+chrome.runtime.onInstalled.addListener(() => {
+  pinDefaults();
+  injectMatchingTabs();
+});
+chrome.runtime.onStartup.addListener(() => {
+  pinDefaults();
+  injectMatchingTabs();
+});
 chrome.tabs.onUpdated.addListener((_tabId, info, tab) => {
   if (info.status === "complete") injectIntoTab(tab);
 });
@@ -98,16 +108,16 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
       commentText: message.commentText,
       author: message.author,
       tone: message.tone,
-      language: stored.language || "auto",
+      language: stored.language === "ar" || stored.language === "en" ? stored.language : "auto",
       extraVoice: [stored.extraVoice || "", message.customNote || ""].filter(Boolean).join("\n"),
     });
 
     const drafts = await createDrafts({
       apiKey: stored.apiKey,
-      model: stored.model,
+      model: DEFAULT_MODEL,
       messages,
     });
-    return { ok: true, drafts };
+    return { ok: true, drafts, model: DEFAULT_MODEL };
   })()
     .then(sendResponse)
     .catch((err) => {

@@ -35,7 +35,8 @@ $edits = $dlg.FindAll([System.Windows.Automation.TreeScope]::Descendants, $editC
 Write-Output "EDIT_COUNT=$($edits.Count)"
 foreach ($e in $edits) { Write-Output "EDIT name='$($e.Current.Name)' id='$($e.Current.AutomationId)'" }
 
-$path = "C:\Github\twa-reply-assist"
+. (Join-Path $PSScriptRoot "_repo-root.ps1")
+$path = $script:TwaRepoRoot
 $targetEdit = $null
 foreach ($e in $edits) {
   if ($e.Current.Name -match 'Folder|File name|اسم|Address|عنوان') { $targetEdit = $e; break }

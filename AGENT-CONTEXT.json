@@ -1,39 +1,38 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-28T01:25:00.000Z",
-  "lastTask": "Owner asked to execute the cloud extras: commit 1.4.3, install notes, private GitHub repo.",
+  "updatedAt": "2026-10-07T11:50:00.000Z",
+  "lastTask": "Owner asked to put this program on GitHub.",
   "recentChanges": [
-    "Commit cc1dfbe: orange top bar + install README",
-    "Private repo https://github.com/ammrgamal/twa-reply-assist pushed (origin/master)",
-    "API key was not committed"
+    "Pushed current desktop extension plus android/ overlay to the existing private repo",
+    "No API key committed"
   ],
   "lastHandoff": {
-    "at": "2026-09-28T01:25:00.000Z",
-    "ownerRequest": "نفذ بنفس",
-    "landed": "Private GitHub repo ammrgamal/twa-reply-assist with 1.4.3 + README install steps. Commit cc1dfbe pushed to origin/master. No API key in the tree. extras-closed.",
+    "at": "2026-10-07T11:50:00.000Z",
+    "ownerRequest": "عاوزك تعمل repo لبرنامج ده على github",
+    "landed": "Program lives at https://github.com/ammrgamal/twa-reply-assist (private). Latest commit includes the Android overlay and the desktop extension.",
     "canonicalPath": [
       "https://github.com/ammrgamal/twa-reply-assist",
-      "content/alive.js → #twa-alive-bar → TWA_GENERATE"
+      "lib/voice.js → shared/twa-voice.json → android/"
     ],
-    "onePathCheck": "One repo, one unpacked folder, one generate path. Cloud is this remote, not a second extension.",
+    "onePathCheck": "One GitHub repo. Did not create a second remote.",
     "factsNextAgentNeeds": {
       "paths": [
-        "C:\\Github\\twa-reply-assist",
+        "G:\\My Drive\\Repos\\twa-reply-assist",
         "https://github.com/ammrgamal/twa-reply-assist"
       ],
       "contracts": [
         "Never commit API key",
         "Repo is private",
-        "Version remount 1.4.3",
-        "extras-closed"
+        "Model is gpt-4.1-mini"
       ],
       "liveIds": [
         "noafjmnihfhcjfmfhfdmeecpmmphpbpn"
       ],
-      "openState": "origin tracks https://github.com/ammrgamal/twa-reply-assist.git master. Clone + Load unpacked + paste key on each Chrome."
+      "openState": "origin is https://github.com/ammrgamal/twa-reply-assist.git master."
     },
     "doNotGuess": [
-      "Do not drip extras after extras-closed",
+      "Do not create a second GitHub repo for the same program",
+      "Do not print or commit the API key",
       "Do not force-push master"
     ]
   }

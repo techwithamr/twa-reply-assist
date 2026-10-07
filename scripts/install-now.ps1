@@ -70,7 +70,8 @@ foreach ($e in $dlg.FindAll([System.Windows.Automation.TreeScope]::Descendants, 
 }
 if ($folderEdit) {
   $folderEdit.SetFocus()
-  $folderEdit.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern).SetValue("C:\Github\twa-reply-assist")
+  . (Join-Path $PSScriptRoot "_repo-root.ps1")
+  $folderEdit.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern).SetValue($script:TwaRepoRoot)
   Write-Output "FOLDER_SET"
 } else {
   throw "NO_FOLDER_EDIT"

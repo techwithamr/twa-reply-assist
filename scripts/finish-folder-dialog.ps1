@@ -57,7 +57,8 @@ foreach ($e in $dlg.FindAll([System.Windows.Automation.TreeScope]::Descendants, 
   if ($e.Current.Name -eq 'Folder:' -or $e.Current.AutomationId -eq '1152') {
     $e.SetFocus()
     $val = $e.GetCurrentPattern([System.Windows.Automation.ValuePattern]::Pattern)
-    $val.SetValue("C:\Github\twa-reply-assist")
+    . (Join-Path $PSScriptRoot "_repo-root.ps1")
+    $val.SetValue($script:TwaRepoRoot)
     Write-Output "SET_FOLDER"
   }
 }

@@ -3,9 +3,9 @@ if (window !== window.top) {
   document.getElementById("twa-reply-root")?.remove();
   document.getElementById("twa-alive-bar")?.remove();
   document.querySelectorAll(".twa-yap, .twa-fab, .twa-panel").forEach((n) => n.remove());
-  window.__twaReplyAssistVersion = "1.4.3";
-} else if (window.__twaReplyAssistVersion !== "1.4.3") {
-  window.__twaReplyAssistVersion = "1.4.3";
+  window.__twaReplyAssistVersion = "1.4.8";
+} else if (window.__twaReplyAssistVersion !== "1.4.8") {
+  window.__twaReplyAssistVersion = "1.4.8";
   document.getElementById("twa-reply-root")?.remove();
   document.querySelectorAll(".twa-yap").forEach((n) => n.remove());
   document.querySelectorAll(".twa-fab, .twa-panel").forEach((n) => n.remove());
@@ -317,12 +317,21 @@ if (window !== window.top) {
   const errorLine = panel.querySelector("#twa-error");
   const draftsBox = panel.querySelector("#twa-drafts");
 
+  let toastTimer = 0;
   function showToast(msg, kind = "info") {
-    toast.textContent = msg || "";
+    const text = String(msg || "").trim();
+    toast.textContent = text;
     toast.dataset.kind = kind;
-    toast.classList.toggle("is-on", Boolean(msg));
-    errorLine.hidden = kind !== "error" || !msg;
-    errorLine.textContent = kind === "error" ? msg || "" : "";
+    toast.classList.toggle("is-on", Boolean(text));
+    errorLine.hidden = kind !== "error" || !text;
+    errorLine.textContent = kind === "error" ? text : "";
+    clearTimeout(toastTimer);
+    if (text && kind !== "error") {
+      toastTimer = setTimeout(() => {
+        toast.textContent = "";
+        toast.classList.remove("is-on");
+      }, 2400);
+    }
   }
 
   function fillContext(fromEl) {
@@ -367,14 +376,11 @@ if (window !== window.top) {
   }
 
   function togglePanel() {
-    // One surface: the top #twa-alive-bar. Do not reopen the old side panel.
+    // One surface: the #twa-alive-bar icon. Do not reopen the old side panel.
   }
 
   function syncFab() {
-    const supported = detectPlatform() !== "unknown";
-    const show =
-      supported || Boolean(visibleCommentComposer()) || root.classList.contains("is-open");
-    root.classList.toggle("has-composer", show);
+    root.classList.remove("has-composer");
   }
 
   function composerIsEmpty(node) {
@@ -632,7 +638,6 @@ if (window !== window.top) {
 
   syncFab();
   mountYapButtons();
-  showToast("TWA جاهز — اختَر نبرة من الشريط فوق الصفحة.", "info");
   const observer = new MutationObserver(() => {
     syncFab();
     mountYapButtons();

@@ -27,7 +27,13 @@ window.eval(code);
 
 const bar = document.getElementById("twa-alive-bar");
 assert.ok(bar, "alive bar must exist");
-assert.match(bar.textContent, /TWA شغال/);
+const launch = bar.querySelector("#twa-alive-launch");
+assert.ok(launch, "collapsed icon must exist");
+assert.equal(launch.textContent, "T");
+assert.match(launch.title, /TWA شغال/);
+assert.equal(bar.classList.contains("is-open"), false);
+launch.click();
+assert.ok(bar.classList.contains("is-open"));
 const agree = [...bar.querySelectorAll("button")].find((b) => b.dataset.tone === "agree");
 assert.ok(agree);
 agree.click();

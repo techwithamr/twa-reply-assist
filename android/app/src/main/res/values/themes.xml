@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <style name="Theme.TwaReply" parent="Theme.AppCompat.Light.NoActionBar">
+    <item name="colorPrimary">#E85D3C</item>
+    <item name="android:statusBarColor">#E85D3C</item>
+  </style>
+</resources>
