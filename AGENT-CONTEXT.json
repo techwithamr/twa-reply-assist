@@ -1,4 +1,4 @@
-{
+﻿{
   "version": 1,
   "updatedAt": "2026-10-07T12:00:00.000Z",
   "lastTask": "Owner asked to put this program on GitHub.",
@@ -8,17 +8,17 @@
   ],
   "lastHandoff": {
     "at": "2026-10-07T12:00:00.000Z",
-    "ownerRequest": "عاوزك تعمل repo لبرنامج ده على github",
-    "landed": "Existing private repo https://github.com/ammrgamal/twa-reply-assist received 6279f5c (482b96e..6279f5c). That commit has the Android overlay and the desktop extension. No second repo.",
+    "ownerRequest": "Ø¹Ø§ÙˆØ²Ùƒ ØªØ¹Ù…Ù„ repo Ù„Ø¨Ø±Ù†Ø§Ù…Ø¬ Ø¯Ù‡ Ø¹Ù„Ù‰ github",
+    "landed": "Existing private repo https://github.com/techwithamr/twa-reply-assist received 6279f5c (482b96e..6279f5c). That commit has the Android overlay and the desktop extension. No second repo.",
     "canonicalPath": [
-      "https://github.com/ammrgamal/twa-reply-assist",
-      "lib/voice.js → shared/twa-voice.json → android/"
+      "https://github.com/techwithamr/twa-reply-assist",
+      "lib/voice.js â†’ shared/twa-voice.json â†’ android/"
     ],
-    "onePathCheck": "One GitHub repo. origin is https://github.com/ammrgamal/twa-reply-assist.git. Did not create a second remote.",
+    "onePathCheck": "One GitHub repo. origin is https://github.com/techwithamr/twa-reply-assist.git. Did not create a second remote.",
     "factsNextAgentNeeds": {
       "paths": [
         "G:\\My Drive\\Repos\\twa-reply-assist",
-        "https://github.com/ammrgamal/twa-reply-assist"
+        "https://github.com/techwithamr/twa-reply-assist"
       ],
       "contracts": [
         "Never commit API key",
