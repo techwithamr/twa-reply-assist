@@ -1,17 +1,17 @@
 ﻿{
   "version": 1,
-  "updatedAt": "2026-10-11T09:54:00.000Z",
+  "updatedAt": "2026-10-11T09:55:30.000Z",
   "lastTask": "Owner asked for a public free Vercel domain page and GitHub repo under techwithamr.",
   "recentChanges": [
-    "Live public download site: https://twa-reply-assist-qiq1.vercel.app (SSO off, HTTP 200)",
-    "GitHub public repo: https://github.com/techwithamr/twa-reply-assist",
+    "Live public download site: https://twa-reply-assist-qiq1.vercel.app (SSO off, HTTP 200, title TWA Reply Assist — تحميل)",
+    "GitHub public repo pushed: https://github.com/techwithamr/twa-reply-assist @ 6809992",
     "package-release.mjs uses pure Node ZIP (no PowerShell) for Vercel Linux builds",
     "vercel.json + scripts/build-web.mjs → public/"
   ],
   "lastHandoff": {
-    "at": "2026-10-11T09:54:00.000Z",
+    "at": "2026-10-11T09:55:30.000Z",
     "ownerRequest": "انا عاوز صفحة domain افتحه من اى متصفح على الانترنت على free vercel doamin و hithub repo على techwithamr account",
-    "landed": "Public Vercel download page live; techwithamr GitHub repo public with homepage set. Download-site commit may still be finishing rebase/push.",
+    "landed": "Public Vercel download page live without SSO. Public GitHub repo techwithamr/twa-reply-assist at 6809992 with homepage set to the Vercel URL.",
     "canonicalPath": [
       "https://twa-reply-assist-qiq1.vercel.app",
       "https://github.com/techwithamr/twa-reply-assist",
@@ -35,11 +35,12 @@
       ],
       "liveIds": [
         "https://twa-reply-assist-qiq1.vercel.app",
+        "https://github.com/techwithamr/twa-reply-assist",
+        "sha 6809992",
         "prj_4EVq90d9WwXTtXRJDO2M5EOS7dEk",
-        "team_LJPJ62SdNRBCPtE9eAzWfYU7 (qiq1)",
-        "dpl_HUE8CR3ALCaht2GmtZy9j8faYWf9 / twa-reply-assist-qp34f5g6z-qiq1.vercel.app"
+        "team_LJPJ62SdNRBCPtE9eAzWfYU7 (qiq1)"
       ],
-      "openState": "If rebase conflicts remain on AGENT-CONTEXT/README, finish rebase and git push techwithamr master. Optional: connect Vercel project git to techwithamr/twa-reply-assist for auto-deploy."
+      "openState": "Optional: connect Vercel git to techwithamr/twa-reply-assist for auto-deploy on push; sync origin (ammrgamal) if still wanted; push APK when built."
     },
     "doNotGuess": [
       "Do not re-enable Vercel SSO on this project",
