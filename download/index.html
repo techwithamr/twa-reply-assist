@@ -9,36 +9,19 @@
   <body>
     <main class="shell">
       <section class="hero">
-        <div>
-          <h1 class="brand">Tech With <span>Amr</span></h1>
-          <p class="lead">حمّل إضافة الكروم وتطبيق الأندرويد من أي متصفح، أو نزّل ملف الإعداد السريع لويندوز.</p>
-        </div>
+        <h1 class="brand">Tech With <span>Amr</span></h1>
+        <p class="lead">حمّل الإضافة أو حزمة الإعداد لويندوز من هنا.</p>
         <div class="cta-row">
-          <button type="button" class="btn btn-primary" id="setupBtn">إعداد سريع بضغطة واحدة</button>
-          <a class="btn btn-ghost" id="setupFile" href="./release/twa-setup.cmd">تحميل ملف الإعداد</a>
+          <button type="button" class="btn btn-primary" id="setupBtn">نزّل حزمة الإعداد لويندوز</button>
         </div>
+        <p class="links">
+          <a id="chromeBtn" href="#">إضافة كروم (ZIP)</a>
+          <span aria-hidden="true">·</span>
+          <a id="androidBtn" href="#">أندرويد</a>
+        </p>
+        <p class="meta" id="releaseMeta">—</p>
         <p class="status" id="status">جاري تجهيز الحزم…</p>
       </section>
-
-      <section class="grid">
-        <article class="panel">
-          <h2>إضافة كروم</h2>
-          <p>ملف ZIP جاهز لـ Load unpacked. بعد التحميل الصق مفتاح OpenAI من أيقونة الإضافة.</p>
-          <p class="meta" id="chromeMeta">—</p>
-          <div class="cta-row">
-            <a class="btn btn-secondary" id="chromeBtn" href="#">تحميل الكروم</a>
-          </div>
-        </article>
-        <article class="panel">
-          <h2>أندرويد</h2>
-          <p>لو فيه APK يتحمّل مباشرة. لو لأ، تحمّل مشروع البناء وتفتحه في Android Studio.</p>
-          <p class="meta" id="androidMeta">—</p>
-          <div class="cta-row">
-            <a class="btn btn-secondary" id="androidBtn" href="#">تحميل الأندرويد</a>
-          </div>
-        </article>
-      </section>
-
       <p class="foot">
         الموديل <code>gpt-4.1-mini</code> · النشر يدوي دائمًا · المفتاح ما بيتكتبش في الملفات.
       </p>
@@ -47,10 +30,9 @@
       const status = document.getElementById("status");
       const chromeBtn = document.getElementById("chromeBtn");
       const androidBtn = document.getElementById("androidBtn");
-      const chromeMeta = document.getElementById("chromeMeta");
-      const androidMeta = document.getElementById("androidMeta");
+      const releaseMeta = document.getElementById("releaseMeta");
       const setupBtn = document.getElementById("setupBtn");
-      const setupFile = document.getElementById("setupFile");
+      const isLocal = location.hostname === "127.0.0.1" || location.hostname === "localhost";
 
       function setStatus(text) {
         status.textContent = text;
@@ -60,8 +42,17 @@
         return "./release/" + name;
       }
 
+      function downloadFile(name) {
+        const a = document.createElement("a");
+        a.href = releaseUrl(name);
+        a.download = name;
+        a.click();
+      }
+
       async function loadCatalog() {
-        const paths = ["/api/catalog", "./release/catalog.json"];
+        const paths = isLocal
+          ? ["/api/catalog", "./release/catalog.json"]
+          : ["./release/catalog.json"];
         let data = null;
         for (const path of paths) {
           try {
@@ -78,18 +69,25 @@
 
         chromeBtn.href = releaseUrl(data.chrome.file);
         chromeBtn.download = data.chrome.file;
-        chromeMeta.textContent = "الإصدار " + data.version + " · " + data.chrome.file;
+        chromeBtn.textContent = "إضافة كروم (ZIP)";
 
         if (data.android.apk) {
           androidBtn.href = releaseUrl(data.android.apk);
           androidBtn.download = data.android.apk;
-          androidMeta.textContent = "APK جاهز · " + data.android.apk;
+          androidBtn.textContent = "أندرويد (APK)";
+          releaseMeta.textContent =
+            "الإصدار " + data.version + " · كروم + APK جاهز";
         } else {
           androidBtn.href = releaseUrl(data.android.zip);
           androidBtn.download = data.android.zip;
-          androidMeta.textContent = "مشروع البناء · " + data.android.zip;
+          androidBtn.textContent = "أندرويد (مشروع Studio)";
+          releaseMeta.textContent =
+            "الإصدار " + data.version + " · كروم جاهز · APK بعد البناء في Android Studio";
         }
-        setupFile.href = releaseUrl(data.setup?.windows || "twa-setup.cmd");
+
+        setupBtn.textContent = isLocal
+          ? "ثبّت على هذا الجهاز"
+          : "نزّل حزمة الإعداد لويندوز";
         setStatus("جاهز · الإصدار " + data.version);
         return data;
       }
@@ -98,38 +96,50 @@
 
       setupBtn.addEventListener("click", async () => {
         setupBtn.disabled = true;
-        setStatus("بيحاول الإعداد السريع…");
         try {
-          const res = await fetch("/api/setup", { method: "POST" });
-          if (res.ok) {
-            const body = await res.json();
-            if (body.ok) {
-              setStatus("تم محليًا. المجلد: C:\\Github\\twa-reply-assist\nالصق مفتاح OpenAI من أيقونة الإضافة.");
-              return;
+          if (isLocal) {
+            setStatus("بيثبّت محليًا…");
+            const res = await fetch("/api/setup", { method: "POST" });
+            if (res.ok) {
+              const body = await res.json();
+              if (body.ok) {
+                setStatus(
+                  "تم محليًا. المجلد: C:\\Github\\twa-reply-assist\nالصق مفتاح OpenAI من أيقونة الإضافة."
+                );
+                return;
+              }
             }
+            setStatus("الإعداد المحلي فشل. نزّل الحزمة وشغّل twa-setup.cmd");
+          }
+
+          const bundle = catalog?.setup?.bundle;
+          if (bundle) {
+            downloadFile(bundle);
+            setStatus("اتحمّل حزمة الإعداد. فك الضغط وشغّل twa-setup.cmd");
+          } else if (catalog?.setup?.windows) {
+            downloadFile(catalog.setup.windows);
+            setStatus("اتحمّل ملف الإعداد. حطّه جنب ZIP الكروم وشغّله.");
+          } else {
+            setStatus("ما لقيتش حزمة الإعداد.");
           }
         } catch {
-          // public hosting: download the one-click setup bundle
+          setStatus("حصل خطأ. جرّب رابط كروم أو أندرويد تحت.");
+        } finally {
+          setupBtn.disabled = false;
         }
-        const bundle = catalog?.setup?.bundle;
-        if (bundle) {
-          const a = document.createElement("a");
-          a.href = releaseUrl(bundle);
-          a.download = bundle;
-          a.click();
-          setStatus("اتحمّل حزمة الإعداد. فك الضغط وشغّل twa-setup.cmd");
-        } else {
-          setupFile.click();
-          setStatus("اتحمّل ملف الإعداد. حطّه جنب ZIP الكروم وشغّله.");
-        }
-        setupBtn.disabled = false;
       });
 
       loadCatalog()
         .then((data) => {
           catalog = data;
         })
-        .catch(() => setStatus("ما لقيتش الحزم. على السيرفر المحلي: npm run download"));
+        .catch(() =>
+          setStatus(
+            isLocal
+              ? "ما لقيتش الحزم. شغّل: npm run download"
+              : "ما لقيتش الحزم على السيرفر."
+          )
+        );
     </script>
   </body>
 </html>

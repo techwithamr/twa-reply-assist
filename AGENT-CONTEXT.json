@@ -1,51 +1,46 @@
 ﻿{
   "version": 1,
-  "updatedAt": "2026-10-11T09:55:30.000Z",
-  "lastTask": "Owner asked for a public free Vercel domain page and GitHub repo under techwithamr.",
+  "updatedAt": "2026-10-11T10:02:00.000Z",
+  "lastTask": "Owner said اعمل المقترحات — implement all five extras.",
   "recentChanges": [
-    "Live public download site: https://twa-reply-assist-qiq1.vercel.app (SSO off, HTTP 200, title TWA Reply Assist — تحميل)",
-    "GitHub public repo pushed: https://github.com/techwithamr/twa-reply-assist @ 6809992",
-    "package-release.mjs uses pure Node ZIP (no PowerShell) for Vercel Linux builds",
-    "vercel.json + scripts/build-web.mjs → public/"
+    "Vercel project linked to github.com/techwithamr/twa-reply-assist (master)",
+    "git origin now only techwithamr/twa-reply-assist",
+    "Download UI simplified: one primary CTA + two links; /api/setup only when hostname local",
+    "APK still null until Android Studio build lands in known output paths"
   ],
   "lastHandoff": {
-    "at": "2026-10-11T09:55:30.000Z",
-    "ownerRequest": "انا عاوز صفحة domain افتحه من اى متصفح على الانترنت على free vercel doamin و hithub repo على techwithamr account",
-    "landed": "Public Vercel download page live without SSO. Public GitHub repo techwithamr/twa-reply-assist at 6809992 with homepage set to the Vercel URL.",
+    "at": "2026-10-11T10:02:00.000Z",
+    "ownerRequest": "اعمل المقترحات",
+    "landed": "Extras 1–4 done. Extra 5 PARTIAL: no APK artifact yet; package-release already auto-includes APK when present.",
     "canonicalPath": [
       "https://twa-reply-assist-qiq1.vercel.app",
       "https://github.com/techwithamr/twa-reply-assist",
-      "npm run build:web → public/",
-      "vercel.json outputDirectory public"
+      "download/index.html → public/ via build-web",
+      "origin → techwithamr/twa-reply-assist"
     ],
-    "onePathCheck": "One public download surface (download/ → public/ on Vercel). One GitHub repo techwithamr/twa-reply-assist. Local npm run download remains the local path.",
+    "onePathCheck": "One download surface, one GitHub origin (techwithamr), one Vercel git link. Local /api/setup stays on serve-download only.",
     "factsNextAgentNeeds": {
       "paths": [
         "G:\\My Drive\\Repos\\twa-reply-assist",
-        "C:\\Github\\twa-reply-assist",
-        "public/",
-        "vercel.json",
-        ".vercel/project.json → qiq1/twa-reply-assist"
+        "download/index.html",
+        "scripts/package-release.mjs androidApkCandidates"
       ],
       "contracts": [
         "Never commit API key",
-        "Repo: techwithamr/twa-reply-assist (public)",
-        "Do not invent a second download site",
-        "ZIP packaging must stay cross-platform (Node zlib), not PowerShell"
+        "Public page must not call /api/setup",
+        "SSO stays null on qiq1/twa-reply-assist"
       ],
       "liveIds": [
         "https://twa-reply-assist-qiq1.vercel.app",
-        "https://github.com/techwithamr/twa-reply-assist",
-        "sha 6809992",
         "prj_4EVq90d9WwXTtXRJDO2M5EOS7dEk",
-        "team_LJPJ62SdNRBCPtE9eAzWfYU7 (qiq1)"
+        "git link: techwithamr/twa-reply-assist@master"
       ],
-      "openState": "Optional: connect Vercel git to techwithamr/twa-reply-assist for auto-deploy on push; sync origin (ammrgamal) if still wanted; push APK when built."
+      "openState": "Drop APK into android/app/build/outputs/apk/... then npm run build:web / push to publish it."
     },
     "doNotGuess": [
-      "Do not re-enable Vercel SSO on this project",
-      "Do not force-push",
-      "Do not print tokens"
+      "Do not invent an APK",
+      "Do not re-add ammrgamal as origin",
+      "Do not re-enable SSO"
     ]
   }
 }
