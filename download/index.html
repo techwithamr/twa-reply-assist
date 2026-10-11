@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>TWA Reply Assist — تحميل</title>
+    <link rel="stylesheet" href="./download.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="hero">
+        <div>
+          <h1 class="brand">Tech With <span>Amr</span></h1>
+          <p class="lead">حمّل إضافة الكروم وتطبيق الأندرويد من أي متصفح، أو نزّل ملف الإعداد السريع لويندوز.</p>
+        </div>
+        <div class="cta-row">
+          <button type="button" class="btn btn-primary" id="setupBtn">إعداد سريع بضغطة واحدة</button>
+          <a class="btn btn-ghost" id="setupFile" href="./release/twa-setup.cmd">تحميل ملف الإعداد</a>
+        </div>
+        <p class="status" id="status">جاري تجهيز الحزم…</p>
+      </section>
+
+      <section class="grid">
+        <article class="panel">
+          <h2>إضافة كروم</h2>
+          <p>ملف ZIP جاهز لـ Load unpacked. بعد التحميل الصق مفتاح OpenAI من أيقونة الإضافة.</p>
+          <p class="meta" id="chromeMeta">—</p>
+          <div class="cta-row">
+            <a class="btn btn-secondary" id="chromeBtn" href="#">تحميل الكروم</a>
+          </div>
+        </article>
+        <article class="panel">
+          <h2>أندرويد</h2>
+          <p>لو فيه APK يتحمّل مباشرة. لو لأ، تحمّل مشروع البناء وتفتحه في Android Studio.</p>
+          <p class="meta" id="androidMeta">—</p>
+          <div class="cta-row">
+            <a class="btn btn-secondary" id="androidBtn" href="#">تحميل الأندرويد</a>
+          </div>
+        </article>
+      </section>
+
+      <p class="foot">
+        الموديل <code>gpt-4.1-mini</code> · النشر يدوي دائمًا · المفتاح ما بيتكتبش في الملفات.
+      </p>
+    </main>
+    <script>
+      const status = document.getElementById("status");
+      const chromeBtn = document.getElementById("chromeBtn");
+      const androidBtn = document.getElementById("androidBtn");
+      const chromeMeta = document.getElementById("chromeMeta");
+      const androidMeta = document.getElementById("androidMeta");
+      const setupBtn = document.getElementById("setupBtn");
+      const setupFile = document.getElementById("setupFile");
+
+      function setStatus(text) {
+        status.textContent = text;
+      }
+
+      function releaseUrl(name) {
+        return "./release/" + name;
+      }
+
+      async function loadCatalog() {
+        const paths = ["/api/catalog", "./release/catalog.json"];
+        let data = null;
+        for (const path of paths) {
+          try {
+            const res = await fetch(path, { cache: "no-store" });
+            if (res.ok) {
+              data = await res.json();
+              break;
+            }
+          } catch {
+            // try next
+          }
+        }
+        if (!data) throw new Error("catalog failed");
+
+        chromeBtn.href = releaseUrl(data.chrome.file);
+        chromeBtn.download = data.chrome.file;
+        chromeMeta.textContent = "الإصدار " + data.version + " · " + data.chrome.file;
+
+        if (data.android.apk) {
+          androidBtn.href = releaseUrl(data.android.apk);
+          androidBtn.download = data.android.apk;
+          androidMeta.textContent = "APK جاهز · " + data.android.apk;
+        } else {
+          androidBtn.href = releaseUrl(data.android.zip);
+          androidBtn.download = data.android.zip;
+          androidMeta.textContent = "مشروع البناء · " + data.android.zip;
+        }
+        setupFile.href = releaseUrl(data.setup?.windows || "twa-setup.cmd");
+        setStatus("جاهز · الإصدار " + data.version);
+        return data;
+      }
+
+      let catalog = null;
+
+      setupBtn.addEventListener("click", async () => {
+        setupBtn.disabled = true;
+        setStatus("بيحاول الإعداد السريع…");
+        try {
+          const res = await fetch("/api/setup", { method: "POST" });
+          if (res.ok) {
+            const body = await res.json();
+            if (body.ok) {
+              setStatus("تم محليًا. المجلد: C:\\Github\\twa-reply-assist\nالصق مفتاح OpenAI من أيقونة الإضافة.");
+              return;
+            }
+          }
+        } catch {
+          // public hosting: download the one-click setup bundle
+        }
+        const bundle = catalog?.setup?.bundle;
+        if (bundle) {
+          const a = document.createElement("a");
+          a.href = releaseUrl(bundle);
+          a.download = bundle;
+          a.click();
+          setStatus("اتحمّل حزمة الإعداد. فك الضغط وشغّل twa-setup.cmd");
+        } else {
+          setupFile.click();
+          setStatus("اتحمّل ملف الإعداد. حطّه جنب ZIP الكروم وشغّله.");
+        }
+        setupBtn.disabled = false;
+      });
+
+      loadCatalog()
+        .then((data) => {
+          catalog = data;
+        })
+        .catch(() => setStatus("ما لقيتش الحزم. على السيرفر المحلي: npm run download"));
+    </script>
+  </body>
+</html>

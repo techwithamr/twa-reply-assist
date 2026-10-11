@@ -97,6 +97,14 @@ assert.match(readFileSync(join(root, "background.js"), "utf8"), /injectMatchingT
 assert.match(readFileSync(join(root, "android", "app", "src", "main", "java", "com", "techwithamr", "replyassist", "Voice.kt"), "utf8"), /gpt-4.1-mini/);
 assert.match(readFileSync(join(root, "android", "app", "src", "main", "AndroidManifest.xml"), "utf8"), /TwaA11yService/);
 assert.match(readFileSync(join(root, "shared", "twa-voice.json"), "utf8"), /وضوح تقني/);
+assert.match(readFileSync(join(root, "download", "index.html"), "utf8"), /إعداد سريع بضغطة واحدة/);
+assert.match(readFileSync(join(root, "scripts", "package-release.mjs"), "utf8"), /twa-reply-assist-chrome/);
+assert.match(readFileSync(join(root, "scripts", "package-release.mjs"), "utf8"), /twa-reply-assist-setup-/);
+assert.match(readFileSync(join(root, "scripts", "serve-download.mjs"), "utf8"), /\/api\/setup/);
+assert.match(readFileSync(join(root, "scripts", "build-web.mjs"), "utf8"), /outputDirectory|public/);
+assert.match(readFileSync(join(root, "vercel.json"), "utf8"), /build-web/);
+assert.match(readFileSync(join(root, "package.json"), "utf8"), /"download"/);
+assert.match(readFileSync(join(root, "package.json"), "utf8"), /"build:web"/);
 
 console.log("check.mjs OK", {
   model: DEFAULT_MODEL,

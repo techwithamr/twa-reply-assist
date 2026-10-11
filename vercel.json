@@ -1,0 +1,8 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "node scripts/build-web.mjs",
+  "outputDirectory": "public",
+  "installCommand": "npm install --omit=dev",
+  "rewrites": [{ "source": "/twa-setup.cmd", "destination": "/release/twa-setup.cmd" }]
+}

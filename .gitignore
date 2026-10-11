@@ -15,3 +15,13 @@ android/build/
 android/app/build/
 android/local.properties
 android/.idea/
+release/*.zip
+release/*.apk
+release/*.ps1
+release/*.cmd
+release/catalog.json
+release/.staging/
+public/
+.vercel/
+.vercel
+.env*.local

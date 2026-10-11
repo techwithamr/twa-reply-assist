@@ -2,7 +2,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node scripts/check.mjs && node scripts/dom-shortcut-test.mjs"
+    "test": "node scripts/check.mjs && node scripts/dom-shortcut-test.mjs",
+    "package": "node scripts/package-release.mjs",
+    "download": "node scripts/serve-download.mjs",
+    "build:web": "node scripts/build-web.mjs",
+    "voice": "node scripts/export-voice-contract.mjs"
   },
   "devDependencies": {
     "jsdom": "^29.1.1"

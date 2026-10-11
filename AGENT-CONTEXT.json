@@ -1,39 +1,50 @@
 ﻿{
   "version": 1,
-  "updatedAt": "2026-10-07T12:00:00.000Z",
-  "lastTask": "Owner asked to put this program on GitHub.",
+  "updatedAt": "2026-10-11T09:54:00.000Z",
+  "lastTask": "Owner asked for a public free Vercel domain page and GitHub repo under techwithamr.",
   "recentChanges": [
-    "Pushed 6279f5c to origin/master: Android overlay plus desktop extension",
-    "No API key committed"
+    "Live public download site: https://twa-reply-assist-qiq1.vercel.app (SSO off, HTTP 200)",
+    "GitHub public repo: https://github.com/techwithamr/twa-reply-assist",
+    "package-release.mjs uses pure Node ZIP (no PowerShell) for Vercel Linux builds",
+    "vercel.json + scripts/build-web.mjs → public/"
   ],
   "lastHandoff": {
-    "at": "2026-10-07T12:00:00.000Z",
-    "ownerRequest": "Ø¹Ø§ÙˆØ²Ùƒ ØªØ¹Ù…Ù„ repo Ù„Ø¨Ø±Ù†Ø§Ù…Ø¬ Ø¯Ù‡ Ø¹Ù„Ù‰ github",
-    "landed": "Existing private repo https://github.com/techwithamr/twa-reply-assist received 6279f5c (482b96e..6279f5c). That commit has the Android overlay and the desktop extension. No second repo.",
+    "at": "2026-10-11T09:54:00.000Z",
+    "ownerRequest": "انا عاوز صفحة domain افتحه من اى متصفح على الانترنت على free vercel doamin و hithub repo على techwithamr account",
+    "landed": "Public Vercel download page live; techwithamr GitHub repo public with homepage set. Download-site commit may still be finishing rebase/push.",
     "canonicalPath": [
+      "https://twa-reply-assist-qiq1.vercel.app",
       "https://github.com/techwithamr/twa-reply-assist",
-      "lib/voice.js â†’ shared/twa-voice.json â†’ android/"
+      "npm run build:web → public/",
+      "vercel.json outputDirectory public"
     ],
-    "onePathCheck": "One GitHub repo. origin is https://github.com/techwithamr/twa-reply-assist.git. Did not create a second remote.",
+    "onePathCheck": "One public download surface (download/ → public/ on Vercel). One GitHub repo techwithamr/twa-reply-assist. Local npm run download remains the local path.",
     "factsNextAgentNeeds": {
       "paths": [
         "G:\\My Drive\\Repos\\twa-reply-assist",
-        "https://github.com/techwithamr/twa-reply-assist"
+        "C:\\Github\\twa-reply-assist",
+        "public/",
+        "vercel.json",
+        ".vercel/project.json → qiq1/twa-reply-assist"
       ],
       "contracts": [
         "Never commit API key",
-        "Repo is private",
-        "Model is gpt-4.1-mini"
+        "Repo: techwithamr/twa-reply-assist (public)",
+        "Do not invent a second download site",
+        "ZIP packaging must stay cross-platform (Node zlib), not PowerShell"
       ],
       "liveIds": [
-        "noafjmnihfhcjfmfhfdmeecpmmphpbpn"
+        "https://twa-reply-assist-qiq1.vercel.app",
+        "prj_4EVq90d9WwXTtXRJDO2M5EOS7dEk",
+        "team_LJPJ62SdNRBCPtE9eAzWfYU7 (qiq1)",
+        "dpl_HUE8CR3ALCaht2GmtZy9j8faYWf9 / twa-reply-assist-qp34f5g6z-qiq1.vercel.app"
       ],
-      "openState": "origin/master includes 6279f5c. Later handoff-only commits may still be local if a follow-up push reset."
+      "openState": "If rebase conflicts remain on AGENT-CONTEXT/README, finish rebase and git push techwithamr master. Optional: connect Vercel project git to techwithamr/twa-reply-assist for auto-deploy."
     },
     "doNotGuess": [
-      "Do not create a second GitHub repo for the same program",
-      "Do not print or commit the API key",
-      "Do not force-push master"
+      "Do not re-enable Vercel SSO on this project",
+      "Do not force-push",
+      "Do not print tokens"
     ]
   }
 }
