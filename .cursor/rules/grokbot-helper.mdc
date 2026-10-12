@@ -1,0 +1,9 @@
+---
+description: Optional helper computer (Grok Bot) with a signed-in browser
+alwaysApply: true
+---
+A helper computer is available: Grok Bot runs a persistent cloud computer with a Chrome browser already signed in to Amr's accounts (Google, Microsoft, YouTube, TikTok, Instagram, LinkedIn, Facebook, and others). This is optional help, not a requirement. Use it only when a task benefits from it, for example testing a deployed site in a real browser, checking something behind a login, or running a step that needs another machine.
+
+To use it, POST a JSON body {"from":"cursor-cloud-agent","task":"<clear task description>","reply_to_agent_id":"<your agent id>"} to $GROKBOT_WEBHOOK_URL with header "Authorization: Bearer $GROKBOT_WEBHOOK_KEY" (never print these values). Grok Bot replies to you as a follow-up message.
+
+Payments, sending messages, deleting data, and unlocking the car need Amr's approval, so don't request those.
